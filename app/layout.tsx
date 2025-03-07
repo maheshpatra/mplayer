@@ -1,16 +1,16 @@
-import type React from "react"
+
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter } from 'next/font/google'
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { MusicProvider } from "@/components/music-context"
+import { AuthProvider } from "../context/AuthContext"
+import { MusicProvider } from "../context/MusicContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Melodify - Modern Music Streaming",
+  title: "Music Streaming App",
   description: "Stream your favorite music anytime, anywhere.",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -21,8 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <MusicProvider>{children}</MusicProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <AuthProvider>
+            <MusicProvider>
+              {children}
+            </MusicProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

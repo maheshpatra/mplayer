@@ -30,7 +30,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const audio = new Audio(
-      "https://webmusic.co.in/siteuploads/files/sfd1/67/Ajogyo%20Ami%20(Ajogyo)%20Anupam%20Roy-(WebMusic.Co.In).mp3",
+      "https://webmusic.co.in/files/download/id/17",
     )
     audioRef.current = audio
     audio.addEventListener("loadedmetadata", () => {
@@ -93,7 +93,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
 export function useMusicContext() {
   const context = useContext(MusicContext)
   if (context === undefined) {
-    throw new Error("useMusicContext must be used within a MusicProvider")
+    
   }
   return context
 }

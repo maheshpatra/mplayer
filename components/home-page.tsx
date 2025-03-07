@@ -1,6 +1,41 @@
+
+"use client";
 import { Card, CardContent } from "@/components/ui/card"
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
+
+  type Song = {
+    id: number;
+    title: string;
+    artist: string;
+    album: string;
+    duration: number;
+    file_path: string;
+    cover_image: string;
+    created_at: string;
+  };
+  const [songs, setSongs] = useState<Song[]>([]);
+  const apiUrl = "https://finafidutsav.com/mplayer/api/songs.php";
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch songs");
+        }
+        console.log(response)
+        const data: Song[] = await response.json();
+        setSongs(data);
+      } catch (error) {
+        console.error("Error fetching songs:", error);
+      }
+    };
+    fetchSongs();
+  }, []);
+
+
   const trendingSongs = [
     { title: "Song 1", artist: "Artist 1", cover: "/placeholder.svg" },
     { title: "Song 2", artist: "Artist 2", cover: "/placeholder.svg" },
@@ -27,16 +62,16 @@ export default function HomePage() {
       <section>
         <h2 className="text-2xl font-semibold mb-4">Trending Songs</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {trendingSongs.map((song, index) => (
-            <Card key={index}>
+          {songs.map((song) => (
+            <Card key={song.id}>
               <CardContent className="p-4">
                 <img
-                  src={song.cover || "/placeholder.svg"}
-                  alt={song.title}
+                  src={song?.cover_image || "/placeholder.svg"}
+                  alt={song?.title}
                   className="w-full h-40 object-cover rounded-md mb-2"
                 />
-                <h3 className="font-medium">{song.title}</h3>
-                <p className="text-sm text-muted-foreground">{song.artist}</p>
+                <h3 className="font-medium">{song?.title}</h3>
+                <p className="text-sm text-muted-foreground">{song?.artist}</p>
               </CardContent>
             </Card>
           ))}
